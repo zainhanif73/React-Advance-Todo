@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import All from "./Components/All";
+import Pending from "./Components/Pending";
+import Completed from "./Components/Completed";
+import Inprogress from "./Components/Inprogress";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<All />}></Route>
+        <Route path="/pending" element={<Pending />}></Route>
+        <Route path="/completed" element={<Completed />}></Route>
+        <Route path="/inProgress" element={<Inprogress />}></Route>
+      </Routes>
+      ;
+    </>
   );
 }
 

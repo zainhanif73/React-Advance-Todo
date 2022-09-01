@@ -80,16 +80,17 @@ const Test = () => {
             <Link to="/" style={{ textDecoration: "none" }}>
               <div
                 className="btn1 border hover:bg-violet-600 rounded-full px-8 ml-3"
-                >
+                style={{ backgroundColor: "black", color: "white" }}
+              >
                 {" "}
                 All
               </div>
             </Link>
             <Link to="/pending" style={{ textDecoration: "none" }}>
-              <div className="btn1 border rounded-full px-8 ml-3 " >Pending</div>
+              <div className="btn1 border rounded-full px-8 ml-3 ">Pending</div>
             </Link>
             <Link to="/inprogress" style={{ textDecoration: "none" }}>
-              <div className="btn1 border rounded-full px-8 ml-3 " style={{ backgroundColor: "black", color: "white" }}>InProgress</div>
+              <div className="btn1 border rounded-full px-8 ml-3 ">InProgress</div>
             </Link>
             <Link to="/completed" style={{ textDecoration: "none" }}>
               <div className="btn1 border rounded-full px-8 ml-3 ">Completed</div>
@@ -112,19 +113,10 @@ const Test = () => {
           </div>
         </div>
       </div>
-     <div
-        className="model absolute right-36 top-18 p-3 pl-6 w-72"
-        style={{ display: turnOn ? "block" : "none" }}
-      >
-        <label style={{ fontFamily: "Josefin Sans" }}>Title</label>
+      <div className="model absolute right-36 top-18 p-3" style={{ display: turnOn ? "block" : "none" }}>
+        <label style={{fontFamily: 'Josefin Sans'}}>Title</label>
         <br />
-        <input
-          style={{
-            width: "230px",
-            height: "35px",
-            background: "#E5E5E5",
-            paddingBottom: "20px",
-          }}
+        <input style={{background: "#E5E5E5", paddingBottom:"20px"}}
           type="text"
           id="title"
           name="title"
@@ -134,15 +126,10 @@ const Test = () => {
           }}
         />
         <br />
-        <label style={{ fontFamily: "Josefin Sans" }}>Description</label>
+        <label style={{fontFamily: 'Josefin Sans'}}>Description</label>
         <br />
         <input
-          style={{
-            width: "230px",
-            height: "35px",
-            background: "#E5E5E5",
-            paddingBottom: "20px",
-          }}
+        style={{background: "#E5E5E5", paddingBottom:"20px"}}
           type="text"
           id="description"
           name="description"
@@ -152,30 +139,24 @@ const Test = () => {
           }}
         />
         <br />
-        <input
-          style={{
-            height: "33px",
-            width: "230px",
-            marginTop: "12px",
-            backgroundColor: "black",
-            color: "white",
-            textAlign: "center",
-          }}
-          type="submit"
-          onClick={() => saveData()}
-          value="Add"
-        ></input>
-      </div>
+        <input style={{ height:"33px",width:"190px",marginTop:"12px",backgroundColor:"black", color:"white", textAlign:"center"}} type="submit" onClick={() => saveData()} value="Add"></input>
+      </div>{" "}
       <br />
       <span className="title" style={{ marginLeft: "70px" }}>
+        Pending{" "}
+      </span>
+      <span className="title" style={{ marginLeft: "140px" }}>
         In Progress
+      </span>
+      <span className="title" style={{ marginLeft: "110px" }}>
+        Completed
       </span>
       <div className="flex">
         <div>
           {data.map((e, index) => {
-            if (e.inprogress === 1)
+            if (e.pending === 1)
               return (
-                <div className="flex flex-col flex-e w-56 ml-5 mt-5 p-2 pt-0 rounded-md bg-silver" key={index}>
+                <div className="flex flex-col flex-e w-56 ml-5 mt-5 p-2 rounded-md bg-silver" key={index}>
                   <span
                     className="dots cursor-pointer relative"
                     onClick={() => showOption(index)}
@@ -184,7 +165,7 @@ const Test = () => {
                     ...
                     <div
                       onClick={() => progressData(index)}
-                      className="bg-white absolute top-1 right-8 px-1"
+                      className="bg-white absolute top-0 right-8 px-1"
                       style={{display: display[index] ? "block" : "none" }}
                     >
                       Progress
@@ -195,7 +176,57 @@ const Test = () => {
               );
           })}
         </div>
-       
+        <div>
+          {data.map((e, index) => {
+            if (e.inprogress === 1)
+              return (
+                <div
+                  className="w-60 ml-5 mt-5 p-2 rounded-md"
+                  style={{ backgroundColor: "#0098EE", color: "white" }}
+                  key={index}
+                >
+                  <span className="dots cursor-pointer relative" onClick={() => showOption(index)} style={{paddingLeft: "90%"}}>
+                    ...
+                    <div
+                      onClick={() => completeData(index)}
+                      className="options bg-white absolute top-0 right-6 px-1"
+                      style={{
+                        color: "black",
+                        display: display[index] ? "block" : "none",
+                      }}
+                    >
+                      Complete
+                    </div>
+                  </span>
+                  <div>{e.description}</div>
+                </div>
+              );
+          })}
+        </div>
+        <div>
+          {data.map((e, index) => {
+            if (e.completed === 1)
+              return (
+                <div
+                  className="w-60 ml-5 mt-5 p-2 rounded-md"
+                  style={{ backgroundColor: "#00D770" }}
+                  key={index}
+                >
+                  <span className="dots cursor-pointer relative" onClick={() => showOption(index)} style={{paddingLeft: "90%"}} >
+                    ...
+                    <div
+                      onClick={() => deleteData(index)}
+                      className="options absolute top-0 right-5 px-1 bg-white"
+                      style={{ display: display[index] ? "block" : "none" }}
+                    >
+                      Delete
+                    </div>
+                  </span>
+                  <div>{e.description}</div>
+                </div>
+              );
+          })}
+        </div>
       </div>
     </>
   );

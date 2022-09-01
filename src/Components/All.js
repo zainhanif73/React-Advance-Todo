@@ -1,10 +1,10 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import "../App.css";
 import png from "../Images/todo.png";
 import plus from "../Images/Vector.png";
+import "../App.css";
 
-const All = () => {
+const Test = () => {
   const [turnOn, setTurnOn] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -12,6 +12,9 @@ const All = () => {
   const [data, setData] = useState([]);
   var descriptionRef = useRef("");
   var titleRef = useRef("");
+  var pendingDiv = true;
+  var progressDiv = true;
+  var completedDiv = true;
 
   useLayoutEffect(() => {
     setData(JSON.parse(localStorage.getItem("Item")));
@@ -64,51 +67,78 @@ const All = () => {
 
   return (
     <>
-      <div className="flex">
-        <div className="flex">
+      <div className="flex ">
+        <div className="flex mt-3">
           <div>
             <img src={png} alt="" />
           </div>
-          <div className="tooApp"> To Do App</div>
+          <div
+            className="text-heading text-5xl "
+            style={{ fontFamily: "Josefin Sans", fontWeight: "500" }}
+          >
+            {" "}
+            To Do App
+          </div>
         </div>
-        <div className="flex1">
+
+        <div className="flex mt-6 ml-64">
           <div style={{ fontFamily: "Josefin Sans", paddingTop: "5px" }}>
             Filter Bond:{" "}
           </div>
-          <div className="flex2">
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <div className="btn1"> All</div>
+          <div className="flex mx-8 ">
+            <Link to="/">
+              <div
+                className="btn1 border rounded-full px-8 ml-3"
+                style={{ backgroundColor: "black", color: "white" }}
+              >
+                {" "}
+                All
+              </div>
             </Link>
-            <Link to="/pending" style={{ textDecoration: "none" }}>
-              <div className="btn1">Pending</div>
+            <Link to="/pending">
+              <div className="btn1 border rounded-full px-8 ml-3 ">Pending</div>
             </Link>
-            <Link to="/inProgress" style={{ textDecoration: "none" }}>
-              <div className="btn1">InProgress</div>
+            <Link to="/inprogress">
+              <div className="btn1 border rounded-full px-8 ml-3 ">
+                InProgress
+              </div>
             </Link>
-            <Link to="/completed" style={{ textDecoration: "none" }}>
-              <div className="btn1">Completed</div>
+            <Link to="/completed">
+              <div className="btn1 border rounded-full px-8 ml-3 ">
+                Completed
+              </div>
             </Link>
             <div
-              className="active"
+              className="cursor-pointer border-2 relative"
               onClick={() => modelOnOff()}
               style={{
-                alignItems: "center",
                 marginLeft: "40px",
                 padding: "0px 9px",
+                height: "29px",
+                display: "flex",
               }}
             >
-              Create New Todo{" "}
-              <span style={{ marginTop: "100px" }}>
-                <img src={plus} alt="" width={"15px"} height={"15px"} />
+              Create New Todo
+              <span style={{ paddingLeft: "10px", paddingTop: "4px" }}>
+                <img src={plus} alt="" width={"15px"} height={"10px"} />
               </span>
             </div>
           </div>
         </div>
       </div>
-      <div className="model" style={{ display: turnOn ? "block" : "none" }}>
-        <label>Title</label>
+      <div
+        className="model absolute right-36 top-18 p-3 pl-6 w-72"
+        style={{ display: turnOn ? "block" : "none" }}
+      >
+        <label style={{ fontFamily: "Josefin Sans" }}>Title</label>
         <br />
         <input
+          style={{
+            width: "230px",
+            height: "35px",
+            background: "#E5E5E5",
+            paddingBottom: "20px",
+          }}
           type="text"
           id="title"
           name="title"
@@ -118,9 +148,15 @@ const All = () => {
           }}
         />
         <br />
-        <label>Description</label>
+        <label style={{ fontFamily: "Josefin Sans" }}>Description</label>
         <br />
         <input
+          style={{
+            width: "230px",
+            height: "35px",
+            background: "#E5E5E5",
+            paddingBottom: "20px",
+          }}
           type="text"
           id="description"
           name="description"
@@ -129,33 +165,50 @@ const All = () => {
             setDescription(e.target.value);
           }}
         />
-        <input type="submit" onClick={() => saveData()} value="Add"></input>
+        <br />
+        <input
+          style={{
+            height: "33px",
+            width: "230px",
+            marginTop: "12px",
+            backgroundColor: "black",
+            color: "white",
+            textAlign: "center",
+          }}
+          type="submit"
+          onClick={() => saveData()}
+          value="Add"
+        ></input>
       </div>{" "}
       <br />
       <span className="title" style={{ marginLeft: "70px" }}>
         Pending{" "}
       </span>
-      <span className="title" style={{ marginLeft: "150px" }}>
+      <span className="title" style={{ marginLeft: "140px" }}>
         In Progress
       </span>
-      <span className="title" style={{ marginLeft: "130px" }}>
+      <span className="title" style={{ marginLeft: "110px" }}>
         Completed
       </span>
       <div className="flex">
         <div>
           {data.map((e, index) => {
-            if (e.pending === 1)
+            if (e.pending === 1) {
+              pendingDiv = false;
               return (
-                <div className="smallModel" key={index}>
+                <div
+                  className="flex flex-col flex-e w-56 ml-5 mt-5 p-2 pt-0 pb-6 rounded-md bg-silver"
+                  key={index}
+                >
                   <span
-                    className="dots"
+                    className="dots cursor-pointer relative"
                     onClick={() => showOption(index)}
-                    style={{ color: "black" }}
+                    style={{ color: "black", paddingLeft: "90%" }}
                   >
                     ...
                     <div
                       onClick={() => progressData(index)}
-                      className="options"
+                      className="bg-white absolute top-1 right-8 px-1 "
                       style={{ display: display[index] ? "block" : "none" }}
                     >
                       Progress
@@ -164,22 +217,35 @@ const All = () => {
                   <div>{e.description}</div>
                 </div>
               );
+            }
           })}
+          <>
+            {pendingDiv && (
+              <div className="flex flex-col flex-e w-56 ml-5 mt-5 p-2 pt-0 rounded-md bg-silver">
+                <div>No Record Here</div>
+              </div>
+            )}
+          </>
         </div>
         <div>
           {data.map((e, index) => {
-            if (e.inprogress === 1)
+            if (e.inprogress === 1) {
+              progressDiv = false;
               return (
                 <div
-                  className="smallModel"
+                  className="w-60 ml-5 mt-5 p-2 rounded-md pb-6 pt-0"
                   style={{ backgroundColor: "#0098EE", color: "white" }}
                   key={index}
                 >
-                  <span className="dots" onClick={() => showOption(index)}>
+                  <span
+                    className="dots cursor-pointer relative"
+                    onClick={() => showOption(index)}
+                    style={{ paddingLeft: "90%" }}
+                  >
                     ...
                     <div
                       onClick={() => completeData(index)}
-                      className="options"
+                      className="options bg-white absolute top-1 right-6 px-1"
                       style={{
                         color: "black",
                         display: display[index] ? "block" : "none",
@@ -191,22 +257,38 @@ const All = () => {
                   <div>{e.description}</div>
                 </div>
               );
+            }
           })}
+          <>
+            {progressDiv && (
+              <div
+                className="flex flex-col flex-e w-56 ml-5 mt-5 p-2 pt-0 rounded-md"
+                style={{ backgroundColor: "#0098EE" }}
+              >
+                <div>No Record Here</div>
+              </div>
+            )}
+          </>
         </div>
         <div>
           {data.map((e, index) => {
-            if (e.completed === 1)
+            if (e.completed === 1) {
+              completedDiv = false;
               return (
                 <div
-                  className="smallModel"
+                  className="w-60 ml-5 mt-5 p-2 rounded-md pb-6 pt-0"
                   style={{ backgroundColor: "#00D770" }}
                   key={index}
                 >
-                  <span className="dots" onClick={() => showOption(index)}>
+                  <span
+                    className="dots cursor-pointer relative"
+                    onClick={() => showOption(index)}
+                    style={{ paddingLeft: "90%" }}
+                  >
                     ...
                     <div
                       onClick={() => deleteData(index)}
-                      className="options"
+                      className="options absolute top-1 right-5 px-1 bg-white"
                       style={{ display: display[index] ? "block" : "none" }}
                     >
                       Delete
@@ -215,11 +297,22 @@ const All = () => {
                   <div>{e.description}</div>
                 </div>
               );
+            }
           })}
+          <>
+            {completedDiv && (
+              <div
+                className="flex flex-col flex-e w-56 ml-5 mt-5 p-2 pt-0 rounded-md "
+                style={{ backgroundColor: "#00D770" }}
+              >
+                <div>No Record Here</div>
+              </div>
+            )}
+          </>
         </div>
       </div>
     </>
   );
 };
 
-export default All;
+export default Test;
